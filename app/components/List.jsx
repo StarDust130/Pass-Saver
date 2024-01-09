@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Copy, Pencil, Trash2 } from "lucide-react";
+import { Copy, Pencil, PlusCircle, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { DeletePass } from "@/provider/redux/passSlice";
 
@@ -18,7 +18,7 @@ const List = () => {
     }, 2000);
   };
 
-  
+
   return (
     <>
       {passes.length > 1 ? (
@@ -84,15 +84,16 @@ const List = () => {
         </div>
       ) : (
         <div className="flex justify-center items-center h-screen">
-          <div className="text-center p-8 bg-white rounded-lg shadow-md">
+          <div className="text-center p-8  rounded-lg shadow-md">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">
               No Passwords Saved Yet
             </h1>
             <p className="text-gray-500 mb-6">
-              Click on the <span className="text-blue-500 font-bold">+</span>{" "}
+              Click on the <span className="text-blue-500 font-bold"><PlusCircle /></span>{" "}
               icon to add a password
             </p>
-            <div className="text-6xl text-blue-500">Ctrl + Z</div>
+            <span className="text-center">OR</span>
+            <div className="text-4xl text-gray-500">Ctrl + Z</div>
           </div>
         </div>
       )}
