@@ -93,7 +93,7 @@ const List = () => {
               icon to add a password
             </p>
             <span className="text-center">OR</span>
-            <div className="text-4xl text-gray-500">Ctrl + Z</div>
+            <div className=" text-gray-500">Ctrl + Z</div>
           </div>
         </div>
       )}
