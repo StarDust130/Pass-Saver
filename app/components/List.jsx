@@ -18,6 +18,7 @@ const List = () => {
     }, 2000);
   };
 
+  
   return (
     <>
       {passes.length > 1 ? (
