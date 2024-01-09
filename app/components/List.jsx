@@ -89,7 +89,7 @@ const List = () => {
               No Passwords Saved Yet
             </h1>
             <p className="text-gray-500 mb-6">
-              Click on the <span className="text-blue-500 font-bold"><PlusCircle /></span>{" "}
+              Click on the <span className="text-blue-500 font-bold">(+)</span>{" "}
               icon to add a password
             </p>
             <span className="text-center">OR</span>
