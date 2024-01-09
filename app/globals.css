@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* styles/emoji-mart.css */
+/* @import '~emoji-mart/css/emoji-mart.css'; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
