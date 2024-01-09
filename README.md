@@ -4,7 +4,7 @@
 
 ## 🚀 Overview
 
-SecurePassManager is a personal project created to solve the eternal struggle of managing and storing passwords in one ultra-secure location. This project provides a mind-blowingly simple and secure way to store and organize all your passwords.
+SecurePassManager is a <b> personal project </b> created to solve the eternal struggle of managing and storing passwords in one ultra-secure location. This project provides a mind-blowingly simple and secure way to store and organize all your passwords.
 
 ## ✨ Features
 
