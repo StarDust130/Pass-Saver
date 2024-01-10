@@ -1,6 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+// passSlice.js
 
-// Try to load state from local storage, or use an empty array if not present
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("passState");
@@ -23,7 +25,11 @@ export const passSlice = createSlice({
   initialState,
   reducers: {
     AddPass: (state, action) => {
-      state.pass = [...state.pass, action.payload];
+      const newItem = {
+        id: uuidv4(),
+        ...action.payload,
+      };
+      state.pass = [...state.pass, newItem];
       localStorage.setItem("passState", JSON.stringify(state.pass));
     },
     DeletePass: (state, action) => {
@@ -35,4 +41,4 @@ export const passSlice = createSlice({
 
 export const { AddPass, DeletePass } = passSlice.actions;
 
-export const selectPass = (state) => state.passSlice.pass;
+export default passSlice.reducer;

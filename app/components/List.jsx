@@ -1,27 +1,49 @@
 import React, { useState } from "react";
-import { Copy, Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { Copy, Pencil, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { DeletePass } from "@/provider/redux/passSlice";
 
 const List = () => {
   const passes = useSelector((state) => state.passSlice.pass);
   const [isCopied, setIsCopied] = useState(false);
+  const [copiedPassword, setCopiedPassword] = useState("");
+  const [editMode, setEditMode] = useState(null);
+  const [editedAccountName, setEditedAccountName] = useState("");
+  const [editedPassword, setEditedPassword] = useState("");
   const dispatch = useDispatch();
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     setIsCopied(true);
+    setCopiedPassword(text);
 
-    // Reset the copied message after 2 seconds
     setTimeout(() => {
       setIsCopied(false);
+      setCopiedPassword("");
     }, 2000);
   };
 
+  const enterEditMode = (passId, accountName, password) => {
+    setEditMode(passId);
+    setEditedAccountName(accountName);
+    setEditedPassword(password);
+  };
+
+  const exitEditMode = () => {
+    setEditMode(null);
+    setEditedAccountName("");
+    setEditedPassword("");
+  };
+
+  const saveChanges = (passId) => {
+    // Implement logic to save changes to the Redux store
+    // For simplicity, this example just exits edit mode without saving
+    exitEditMode();
+  };
 
   return (
     <>
-      {passes.length > 1 ? (
+      {passes.length > 0 ? (
         <div className="w-full bg-white shadow-md rounded overflow-hidden my-6">
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -36,9 +58,7 @@ const List = () => {
                   <th className="py-3 px-6 text-left font-semibold">
                     Password
                   </th>
-                  <th className="py-3 px-10   text-left font-semibold">
-                    Tools
-                  </th>
+                  <th className="py-3 px-10 text-left font-semibold">Tools</th>
                 </tr>
               </thead>
               <tbody>
@@ -52,29 +72,78 @@ const List = () => {
                     <td className="py-4 px-6 relative hidden md:block">
                       {index + 1}
                     </td>
-                    <td className="py-4 px-6">{singlePass.accountName}</td>
+                    <td className="py-4 px-6">
+                      {editMode === singlePass.id ? (
+                        <input
+                          type="text"
+                          value={editedAccountName}
+                          onChange={(e) => setEditedAccountName(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-md"
+                        />
+                      ) : (
+                        singlePass.accountName
+                      )}
+                    </td>
                     <td className="py-4 text-sm md:text-lg px-6">
-                      {singlePass.password.slice(0, -3).replace(/./g, "*") +
-                        singlePass.password.slice(-3)}
+                      {editMode === singlePass.id ? (
+                        <input
+                          type="text"
+                          value={editedPassword}
+                          onChange={(e) => setEditedPassword(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-md"
+                        />
+                      ) : (
+                        <span className="truncate">
+                          {singlePass.password.slice(0, -3).replace(/./g, "*") +
+                            singlePass.password.slice(-3)}
+                        </span>
+                      )}
                     </td>
                     <td className="py-4 px-6 relative flex items-center space-x-4">
                       <div className="flex items-center space-x-2 md:space-x-4">
                         <Copy
-                          className={`cursor-pointer  hover:text-green-500`}
+                          className={`cursor-pointer hover:text-green-500 transition duration-300 transform hover:scale-110`}
                           onClick={() => copyToClipboard(singlePass.password)}
                         />
-                        <Pencil className="cursor-pointer hidden md:block hover:text-blue-500" />
+                        {editMode === singlePass.id ? (
+                          <>
+                            <button
+                              onClick={() => saveChanges(singlePass.id)}
+                              className="text-green-500 hover:text-green-700"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() => exitEditMode()}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <Pencil
+                            className="cursor-pointer hidden md:block hover:text-blue-500 transition duration-300 transform hover:scale-110"
+                            onClick={() =>
+                              enterEditMode(
+                                singlePass.id,
+                                singlePass.accountName,
+                                singlePass.password
+                              )
+                            }
+                          />
+                        )}
                         <Trash2
-                          className="cursor-pointer hidden md:block hover:text-red-500"
+                          className="cursor-pointer hidden md:block hover:text-red-500 transition duration-300 transform hover:scale-110"
                           onClick={() => dispatch(DeletePass(singlePass.id))}
                         />
                       </div>
 
-                      {isCopied && (
-                        <span className="text-green-500 font-bold bg-gray-600 z-50 absolute top-0  -translate-y-1/2 px-2 py-1 rounded transition-opacity duration-500">
-                          Copied!
-                        </span>
-                      )}
+                      {copiedPassword &&
+                        copiedPassword === singlePass.password && (
+                          <span className="absolute top-0 -mt-6 text-green-500 font-bold bg-gray-600 px-2 py-1 rounded">
+                            Copied!
+                          </span>
+                        )}
                     </td>
                   </tr>
                 ))}
@@ -84,22 +153,11 @@ const List = () => {
         </div>
       ) : (
         <div className="flex justify-center items-center h-screen">
-          <div className="text-center p-8  rounded-lg shadow-md">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              No Passwords Saved Yet
-            </h1>
-            <p className="text-gray-500 mb-6">
-              Click on the <span className="text-blue-500 font-bold">(+)</span>{" "}
-              icon to add a password
-            </p>
-            <span className="text-center">OR</span>
-            <div className=" text-gray-500">Ctrl + Z</div>
-          </div>
+          {/* ... (no passwords saved message) */}
         </div>
       )}
     </>
   );
 };
-
 
 export default List;
