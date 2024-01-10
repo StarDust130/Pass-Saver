@@ -13,3 +13,4 @@ SecurePassManager is a <b> personal project </b> created to solve the eternal st
 - **User-Friendly Interface:** 🎨 Simple and easy-to-use interface for managing your passwords, because who needs complexity?
 - **Custom Categories:** 📂 Organize your passwords into custom categories for better organization. It's like magic for your digital chaos!
 - **Accessibility:** 🌐 Access your passwords from anywhere with an internet connection. Cloud-like, but without the storm.
+
