@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Copy, Pencil, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { DeletePass } from "@/provider/redux/passSlice";
+import { DeletePass, updatePasses } from "@/provider/redux/passSlice";
 
 const List = () => {
   const passes = useSelector((state) => state.passSlice.pass);
@@ -35,11 +35,17 @@ const List = () => {
     setEditedPassword("");
   };
 
-  const saveChanges = (passId) => {
-    // Implement logic to save changes to the Redux store
-    // For simplicity, this example just exits edit mode without saving
-    exitEditMode();
-  };
+   const saveChanges = (passId) => {
+     const passIndex = passes.findIndex((pass) => pass.id === passId);
+     const updatedPasses = [...passes];
+     updatedPasses[passIndex] = {
+       ...updatedPasses[passIndex],
+       accountName: editedAccountName,
+       password: editedPassword,
+     };
+     dispatch(updatePasses(updatedPasses));
+     exitEditMode();
+   };
 
   return (
     <>

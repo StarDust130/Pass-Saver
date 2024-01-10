@@ -36,9 +36,13 @@ export const passSlice = createSlice({
       state.pass = state.pass.filter((pass) => pass.id !== action.payload);
       localStorage.setItem("passState", JSON.stringify(state.pass));
     },
+    updatePasses: (state, action) => {
+      state.pass = action.payload;
+      localStorage.setItem("passState", JSON.stringify(state.pass));
+    },
   },
 });
 
-export const { AddPass, DeletePass } = passSlice.actions;
+export const { AddPass, DeletePass, updatePasses } = passSlice.actions;
 
 export default passSlice.reducer;
